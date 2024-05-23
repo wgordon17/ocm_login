@@ -1,0 +1,57 @@
+[project]
+name = "ocm_login"
+version = "0.1.0"
+description = "Automated headless authentication to OpenShift Cluster Manager"
+authors = [
+    {name = "Will Gordon", email = "wgordon@redhat.com"},
+]
+dependencies = [
+    "playwright",
+    "sh",
+]
+requires-python = "==3.12.*"
+readme = "README.md"
+license = {text = "MIT"}
+
+
+[project.optional-dependencies]
+dev = [
+    "ruff",
+]
+
+[tool.pdm]
+distribution = false
+
+[tool.pdm.scripts]
+# Default to linting the entire src/ directory, but allow overriding with specific files
+ruff-check = "ruff check --fix --exit-zero {args:src/}"
+ruff-format = "ruff format {args:src/}"
+ruff-fix = {composite = ["ruff-check", "ruff-format"]}
+
+
+### RUFF ###
+[tool.ruff]
+line-length = 120
+src = ["src"]
+
+[tool.ruff.lint]
+select = [
+    "F", "E", "W", "C90", "I", "N", "UP", "YTT",
+    "ASYNC", "TRIO", "S", "BLE", "B", "A", "COM",
+    "C4", "DTZ", "T10", "DJ", "EM", "EXE", "FA",
+    "ISC", "ICN", "G", "INP", "PIE", "T20", "PT",
+    "Q", "RSE", "RET", "SLF", "SLOT", "SIM", "INT",
+    "ARG", "PTH", "PGH", "PL", "TRY", "FLY", "PERF",
+    "LOG", "RUF",
+]
+ignore = [
+    "PGH004",  # Use specific error codes when using `noqa`
+    "TID252",  # Relative imports from parent modules are banned
+    "EM101",   # Exception must not use a string literal, assign to variable first
+    "RET504",  # Unnecessary assignment before `return` - makes it cleaner to return on a separate line
+    "PLR0913", # Too many arguments to function call
+    "COM812",  # Trailing comma missing
+    "ARG002",  # Unused method argument
+    "TRY003",  # Avoid specifying long messages outside the exception class
+    "ISC001",  # Conflicts with `ruff` formatter
+]
